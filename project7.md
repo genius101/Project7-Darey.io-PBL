@@ -159,6 +159,10 @@
 <p>Reload the grant table by running:</p>
 
 	FLUSH PRIVILEGES;
+	
+<p>Exit MySQL</p>
+
+	EXIT;
 
 <p>Update the bind address on mysql conf file from 127.0.0.1 to 0.0.0.0 so it can connect from anywhere:</p>
 
@@ -263,20 +267,39 @@ Verify that Apache files and directories are available on the Web Server in /var
 <p>Update the website’s configuration to connect to the database (in functions.php file):</p>
 
 <p>Replace from Before details and change to After details</p>
+
 	Before: $db = mysqli_connect('mysql.tooling.svc.cluster.local', 'admin', 'admin', 'tooling');
-  
-	After: $db = mysqli_connect('<db-ipaddress>', 'webaccess', 'password', 'tooling');
+  	After: $db = mysqli_connect('<db-ipaddress>', 'webaccess', 'password', 'tooling');
 
-o)	Apply tooling-db.sql script:
-	(cd into the tooling folder)
-	sudo mysql -h 172.31.22.39 -u webaccess -p tooling < tooling-db.sql
-	(this can be done after installing mysql-server on the web server)
+<p>Apply tooling-db.sql script:</p>
 
-p)	Along the line, I discovered that login.php was not coming up automatically rather it was showing /index.
-	So I installed PHP on the webserver and restarted http service afterwards to see effect; And restart the httpd service for it to effect changes
+<p>(cd into the tooling folder)</p>
+	
+- [x] sudo mysql -h 172.31.22.39 -u webaccess -p tooling < tooling-db.sql
+	
+<p>(this can be done after installing mysql-server on the web server)</p>
 
-q)	Create in MySQL a new admin user with username: myuser and password: password:
-	INSERT INTO `users` (`id`, `username`, `password`, `email`, `user_type`, `status`) VALUES ('2', 'myuser', '5f4dcc3b5aa765d61d8327deb882cf99', 'user@mail.com', 'admin', '1');
+![3 o](https://user-images.githubusercontent.com/10243139/124436809-480ec280-dd6e-11eb-8a89-cb7ed6dcc0f5.jpg)
+
+<p>Along the line, I discovered that login.php was not coming up automatically rather it was showing /index.</p>
+
+<p>So I installed PHP on the webserver and restarted http service afterwards to see effect</p>
+
+<p>And restart the httpd service for it to effect changes</p>
+
+![3 p](https://user-images.githubusercontent.com/10243139/124436868-58bf3880-dd6e-11eb-805a-e80a9a40ebf6.jpg)
+
+<p>Repeat all the above stages on step 3 on the remaining two Webservers</p>
+
+<p>Create in MySQL on the Database Server, a new admin user with username: myuser and password: password:</p>
+	
+	INSERT INTO `users` (`id`, `username`, `password`, `email`, `user_type`, `status`) VALUES ('2', 'myuser', '5f4dcc3b5aa765d61d8327deb882cf99', 'user@mail.com','admin', '1');
   
-  
+<p>The username myuser and password password can be used to log on any of the WebServers</p>
+
+![3 web servers](https://user-images.githubusercontent.com/10243139/124437825-5f01e480-dd6f-11eb-92d0-a21f772cf1d6.jpg)
+
+<h3>Congratulations, You have just implemented a web solution for a DevOps team using LAMP stack with remote Database and NFS servers</h3>
+
+
   
